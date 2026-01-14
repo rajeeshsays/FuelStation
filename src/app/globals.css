@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 12.9%; /* Charcoal */
+    
+    --card: 0 0% 96.1%; /* Cloud Gray */
+    --card-foreground: 0 0% 12.9%; /* Charcoal */
+    
+    --popover: 0 0% 96.1%; /* Cloud Gray */
+    --popover-foreground: 0 0% 12.9%; /* Charcoal */
+
+    --primary: 0 65.4% 50.4%; /* Crimson Red */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 0 0% 96.1%; /* Cloud Gray */
+    --secondary-foreground: 0 0% 12.9%; /* Charcoal */
+    
+    --muted: 0 0% 96.1%; /* Cloud Gray */
+    --muted-foreground: 0 0% 45.9%; /* Ash Gray */
+    
+    --accent: 1 78.8% 58.4%; /* Tomato Red */
+    --accent-foreground: 0 0% 100%; /* White */
+    
+    --destructive: 0 74.3% 41.8%; /* Dark Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+    
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 65.4% 50.4%; /* Crimson Red */
+    
+    --radius: 0.3rem;
+
+    --chart-1: 0 65.4% 50.4%;
+    --chart-2: 1 78.8% 58.4%;
+    --chart-3: 0 0% 12.9%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    --sidebar-background: 0 0% 96.1%; /* Cloud Gray */
+    --sidebar-foreground: 0 0% 12.9%; /* Charcoal */
+    --sidebar-primary: 0 65.4% 50.4%; /* Crimson Red */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 0 0% 90%; /* Darker Gray for subtle accent */
+    --sidebar-accent-foreground: 0 0% 12.9%; /* Charcoal */
+    --sidebar-border: 0 0% 89.8%;
+    --sidebar-ring: 0 65.4% 50.4%;
+  }
+
+  .dark {
+    --background: 0 0% 7%; /* Deep Charcoal */
+    --foreground: 0 0% 88%; /* Almost White */
+
+    --card: 0 0% 12%; /* Dark Gray */
+    --card-foreground: 0 0% 88%; /* Almost White */
+
+    --popover: 0 0% 12%; /* Dark Gray */
+    --popover-foreground: 0 0% 88%; /* Almost White */
+
+    --primary: 1 84% 62%; /* Vivid Crimson */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 0 0% 12%; /* Dark Gray */
+    --secondary-foreground: 0 0% 88%; /* Almost White */
+
+    --muted: 0 0% 12%; /* Dark Gray */
+    --muted-foreground: 0 0% 69%; /* Medium Gray */
+
+    --accent: 5 100% 69%; /* Soft Coral */
+    --accent-foreground: 0 0% 100%; /* White */
+
+    --destructive: 0 65% 50%; /* Alert Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    --border: 0 0% 17%; /* Gray Line */
+    --input: 0 0% 17%; /* Gray Line */
+    --ring: 1 84% 62%; /* Vivid Crimson */
+    
+    --radius: 0.3rem;
+
+    --chart-1: 1 84% 62%;
+    --chart-2: 5 100% 69%;
+    --chart-3: 0 0% 88%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    --sidebar-background: 0 0% 12%; /* Dark Gray */
+    --sidebar-foreground: 0 0% 88%; /* Almost White */
+    --sidebar-primary: 1 84% 62%; /* Vivid Crimson */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 0 0% 17%; /* Gray Line */
+    --sidebar-accent-foreground: 0 0% 88%; /* Almost White */
+    --sidebar-border: 0 0% 17%; /* Gray Line */
+    --sidebar-ring: 1 84% 62%; /* Vivid Crimson */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* Hide number input arrows */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
