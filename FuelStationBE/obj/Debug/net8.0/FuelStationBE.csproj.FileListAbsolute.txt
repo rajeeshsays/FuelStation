@@ -1,8 +1,0 @@
-/home/rajeesh/LongTerm/Fuel-Management-System/FuelStationBE/obj/Debug/net8.0/FuelStationBE.csproj.AssemblyReference.cache
-/home/rajeesh/LongTerm/Fuel-Management-System/FuelStationBE/obj/Debug/net8.0/FuelStationBE.GeneratedMSBuildEditorConfig.editorconfig
-/home/rajeesh/LongTerm/Fuel-Management-System/FuelStationBE/obj/Debug/net8.0/FuelStationBE.AssemblyInfoInputs.cache
-/home/rajeesh/LongTerm/Fuel-Management-System/FuelStationBE/obj/Debug/net8.0/FuelStationBE.AssemblyInfo.cs
-/home/rajeesh/LongTerm/Fuel-Management-System/FuelStationBE/obj/Debug/net8.0/FuelStationBE.csproj.CoreCompileInputs.cache
-/home/rajeesh/LongTerm/Fuel-Management-System/FuelStationBE/obj/Debug/net8.0/FuelStationBE.MvcApplicationPartsAssemblyInfo.cs
-/home/rajeesh/LongTerm/Fuel-Management-System/FuelStationBE/obj/Debug/net8.0/FuelStationBE.MvcApplicationPartsAssemblyInfo.cache
-/home/rajeesh/LongTerm/Fuel-Management-System/FuelStationBE/obj/Debug/net8.0/FuelStationBE.sourcelink.json
