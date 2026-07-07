@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 // Define public paths that do not require authentication
 const publicPaths = ['/login', '/register'];
 
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const sessionCookie = request.cookies.get('session');
@@ -14,6 +15,7 @@ export function middleware(request: NextRequest) {
   if (sessionCookie && isPublicPath) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
+  
   
   // The AppLayout will handle protecting private routes.
   // We allow the request to proceed, and the layout will check for a valid token.
