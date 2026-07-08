@@ -2,21 +2,27 @@
 import mongoose, { Schema, Document, models, model } from 'mongoose';
 import type { FuelType } from '@/lib/types';
 
-export interface IFuelPrice extends Document {
-    fuelType: FuelType;
-    price: number;
+export interface IJournalDetails {
+    debit :  Number,
+    credit :  Number,
+    accHeadId : Number,
+    description :  Number,
+    createdAt :  Number,
+    updateAt : Number,
+}  
+
+const JournalDetailsSchema: Schema = new Schema({
+    accHeadId : {type:Number,required : true},
+    debit : {type : Number, required : true,default:0},
+    credit : {type : Number,required : true,default:0},
+    description : {type: Number,required : false},
+    createdAt : {type : Number,required : false},
+    updateAt : {type :Number,required : false},
+
 }
+,
+ {   _id: false, // Don't create a separate _id for each detail unless you need one
+}
+)
 
-const JournalSchema: Schema = new Schema({
-    fuelType: { 
-        type: String, 
-        required: true, 
-        unique: true, 
-        enum: ['Lanka Auto Diesel', 'LP92', 'LP95', 'Kerosene'] 
-    },
-    price: { type: Number, required: true },
-}, {
-    timestamps: true,
-});
-
-export default (models.FuelPrice as mongoose.Model<IFuelPrice>) || model<IFuelPrice>('FuelPrice', JournalSchema);
+export default (models.JournalDetails as mongoose.Model<IJournalDetails>) || model<IJournalDetails>('JournalDetails', JournalDetailsSchema);
