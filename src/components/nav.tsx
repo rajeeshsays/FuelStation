@@ -15,6 +15,7 @@ import {
   Warehouse,
   BarChart3,
   History,
+  PersonStanding
 } from "lucide-react";
 
 const navItems = [
@@ -24,6 +25,7 @@ const navItems = [
   { href: "/inventory", icon: Warehouse, label: "Inventory" },
   { href: "/reports", icon: BarChart3, label: "Reports" },
   { href: "/audit-log", icon: History, label: "Audit Log" },
+  { href: "/staff", icon: PersonStanding, label: "Staff" }
 ];
 
 export function Nav() {
