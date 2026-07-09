@@ -26,6 +26,7 @@ const navItems = [
   { href: "/reports", icon: BarChart3, label: "Reports" },
   { href: "/audit-log", icon: History, label: "Audit Log" },
   { href: "/staff", icon: PersonStanding, label: "Staff" }
+  
 ];
 
 export function Nav() {

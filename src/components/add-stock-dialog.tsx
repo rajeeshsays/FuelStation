@@ -5,7 +5,6 @@ import { useFormState, useFormStatus } from 'react-dom';
 import { useEffect, useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { saveStockEntry, type StockEntryFormState } from '@/app/(app)/stock/actions';
-
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -12,8 +12,6 @@ import dynamic from "next/dynamic";
 
 const AddStockDialog = dynamic(() => import('@/components/add-stock-dialog').then(mod => mod.AddStockDialog), { ssr: false });
 const DeleteStockAction = dynamic(() => import('@/components/delete-stock-action').then(mod => mod.DeleteStockAction), { ssr: false });
-
-
 export default async function StockPage({
   searchParams,
 }: {
@@ -22,10 +20,8 @@ export default async function StockPage({
     const fromParam = searchParams?.from as string | undefined;
     const toParam = searchParams?.to as string | undefined;
     const fuelType = (searchParams?.fuelType as FuelType | 'all') || 'all';
-
     const from = fromParam ? parseISO(`${fromParam}T00:00:00Z`) : undefined;
-    const to = toParam ? parseISO(`${toParam}T00:00:00Z`) : undefined;
-    
+    const to = toParam ? parseISO(`${toParam}T00:00:00Z`) : undefined;   
     const stockEntries = await getStockEntries({ from, to, fuelType });
     
   return (
@@ -86,7 +82,6 @@ export default async function StockPage({
             </TableBody>
         </Table>
       </div>
-
     </>
   );
 }

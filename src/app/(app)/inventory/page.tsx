@@ -6,12 +6,10 @@ import type { FuelType, InventoryData } from "@/lib/types";
 import { getInventoryData } from "@/lib/queries";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
-
 const InventoryChart = dynamic(() => import('./inventory-chart').then(mod => mod.InventoryChart), {
     ssr: false,
     loading: () => <Skeleton className="h-[426px] w-full" />,
 });
-
 
 const InventoryCard = ({ fuelType, data }: { fuelType: FuelType; data: { current: number; capacity: number } }) => {
   const percentage = data.capacity > 0 ? (data.current / data.capacity) * 100 : 0;

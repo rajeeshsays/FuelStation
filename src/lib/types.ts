@@ -62,9 +62,8 @@ export type AuditLog = {
   description: string;
   createdAt: Date;
 };
-export type Staff = {
+
+export type StaffData = {
   id? : string;
   name : string,
-
-
 }

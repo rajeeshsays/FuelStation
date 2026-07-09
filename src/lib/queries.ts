@@ -7,7 +7,7 @@ import MeterReadingModel from '@/models/MeterReading';
 import DailySaleModel from '@/models/DailySale';
 import FuelPriceModel from '@/models/FuelPrice';
 import AuditLogModel from '@/models/AuditLog';
-import StaffModel from '@/models/Staff'
+import StaffModel from '@/models/StaffEntry'
 import { tank_capacities, ALL_FUEL_TYPES } from '@/lib/data';
 import type { FuelPrices, FuelType, InventoryData, MeterReading, DailySale, StockEntry, AuditLog, AuditLogMethod,Staff } from '@/lib/types';
 import { eachDayOfInterval, format, startOfDay, startOfToday, parseISO, endOfDay, subDays, startOfYesterday, endOfYesterday, startOfMonth, endOfMonth } from 'date-fns';
@@ -379,13 +379,9 @@ export async function getAuditLogs(filters: {
     });
 }
 
-export async function getAllStaffs(filters : {
-   month?: string; // 'yyyy-MM'
-    date?: string; // 'yyyy-MM-dd'
-    method?: AuditLogMethod | 'all';
-}): Promise<Staff[]> {
+export async function getStaffEntries( filters : {method?: AuditLogMethod | 'all'}): Promise<Staff[]> {
 
-const { month, date, method } = filters;
+const { method } = filters;
 
 await connectToDatabase();
     const matchFilter: any = {};
@@ -393,15 +389,15 @@ await connectToDatabase();
     {
         matchFilter.method = method;
     }
- const logsDocs = await StaffModel.find(matchFilter).sort({ createdAt: -1 }).lean();
+ const staffDocs = await StaffModel.find(matchFilter).sort({ createdAt: -1 }).lean();
     
     // We can't use the generic mongoDocToPlain because we need the original `createdAt` field
-    return logsDocs.map(doc => {
+    return staffDocs.map(doc => {
         const { _id, __v, updatedAt, ...rest } = doc as any;
         return {
             id: _id.toString(),
             ...rest
-        } as AuditLog;
+        } as Staff;
     });
 
 
