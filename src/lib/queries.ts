@@ -204,10 +204,10 @@ export async function getSalesData(filters: {
     from?: Date;
     to?: Date;
     fuelType?: FuelType | 'all';
-    pumpId?: string | 'all';
+    nozzleId?: string | 'all';
     tab: 'daily' | 'monthly' | 'period';
 }): Promise<{ sales: any[], chartData: { name: string; total: number }[] }> {
-    const { from, to, fuelType, pumpId, tab } = filters;
+    const { from, to, fuelType, nozzleId, tab } = filters;
 
     if (!from || !to) {
         return { sales: [], chartData: [] };
@@ -222,7 +222,7 @@ export async function getSalesData(filters: {
       date: { $gte: from, $lte: inclusiveTo }
     };
     if (fuelType && fuelType !== 'all') matchFilter.fuelType = fuelType;
-    if (pumpId && pumpId !== 'all') matchFilter.pumpId = pumpId;
+    if (nozzleId && nozzleId !== 'all') matchFilter.nozzleId = nozzleId;
 
     const salesDocs = await DailySaleModel.find(matchFilter).sort({ date: 1 }).lean();
     

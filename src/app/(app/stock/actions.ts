@@ -81,6 +81,7 @@ export async function saveStockEntry(
           pricePerLiter,
           discount: discount || 0,
           finalPrice,
+          
       });
     }
     

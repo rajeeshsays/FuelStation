@@ -5,9 +5,10 @@ export interface IMeterReading extends Omit<MeterReadingType, 'id'>, Document {}
 
 const MeterReadingSchema: Schema = new Schema({
     date: { type: Date, required: true },
-    pumpId: { type: String, required: true },
-    reading: { type: Number, required: true },
-    sales: { type: Number, required: true, default: 0 },
+    nozzleId: { type: Number, required: true },
+    shiftId : {type:Number,required : true},
+    openingReading: { type: Number, required: true },
+    closingReading: {type :Number,required : true},
 }, {
     timestamps: true,
     toJSON: {

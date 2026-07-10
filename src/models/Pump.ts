@@ -1,0 +1,38 @@
+
+import { timeStamp } from 'console';
+import mongoose, { Schema, Document, models, model } from 'mongoose';
+
+
+export interface IPumpEntry extends Document {
+  name: string;
+}
+
+const PumpEntrySchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    inchargeId: {
+      type: Number,
+      required: true,
+    },
+
+    startTime: {
+      type: Date,
+      required: true,
+    },
+
+    endTime: {
+      type: Date,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default (models.ShiftEntry as mongoose.Model<IPumpEntry>) || model<IPumpEntry>('ShiftEntry', PumpEntrySchema);

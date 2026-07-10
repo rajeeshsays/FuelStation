@@ -15,8 +15,16 @@ import {
   Warehouse,
   BarChart3,
   History,
-  PersonStanding
+  PersonStanding,
+  FuelIcon,
+  Funnel,
+  Timer,
+  CircleDivide,
+  ListOrderedIcon,
+  Repeat1Icon
 } from "lucide-react";
+import Nozzle from "@/models/Nozzle";
+import { FunnelChart } from "recharts";
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -25,8 +33,11 @@ const navItems = [
   { href: "/inventory", icon: Warehouse, label: "Inventory" },
   { href: "/reports", icon: BarChart3, label: "Reports" },
   { href: "/audit-log", icon: History, label: "Audit Log" },
-  { href: "/staff", icon: PersonStanding, label: "Staff" }
-  
+  { href: "/staff", icon: PersonStanding, label: "Staff" },
+  { href: "/pump", icon:FuelIcon, label: "Pump" },
+  { href: "/nozzle", icon:Funnel, label: "Nozzle" },
+  { href: "/shift", icon:Repeat1Icon, label: "Shift" },
+  { href: "/assignShift", icon:ListOrderedIcon, label: "Assign Shift" },
 ];
 
 export function Nav() {

@@ -20,7 +20,7 @@ export type Pump = {
 export type MeterReading = {
   id: string;
   date: Date;
-  pumpId: string;
+  nozzleId: String;
   reading: number;
   sales: number;
 };
