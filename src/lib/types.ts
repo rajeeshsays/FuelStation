@@ -11,6 +11,11 @@ export type InventoryData = {
         capacity: number;
     }
 }
+export type Nozzle = {
+  id : string,
+  nozzleCode : string,
+  pumbId : string,
+}
 
 export type Pump = {
   id: string;
