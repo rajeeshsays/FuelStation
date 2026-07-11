@@ -4,17 +4,17 @@ import { z } from 'zod';
 import { parseISO } from 'date-fns';
 import { rebuildDerivedData } from '@/lib/engine';
 import connectToDatabase from '@/lib/db';
-import StaffEntryModel from '@/models/StaffEntry';
+import NozzleEntryModel from '@/models/StaffEntry';
 import { revalidatePath } from 'next/cache';
 import { logAction } from '@/lib/audit';
 
-const StaffEntrySchema = z.object({
+const NozzleEntrySchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, 'Staff name is required.'),
   
 });
 
-export type StaffEntryFormState = {
+export type NozzleEntryFormState = {
   message: string;
   success: boolean;
   errors?: {
