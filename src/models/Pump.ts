@@ -9,26 +9,13 @@ export interface IPumpEntry extends Document {
 
 const PumpEntrySchema = new Schema(
   {
+
     name: {
       type: String,
       required: true,
       trim: true,
     },
 
-    inchargeId: {
-      type: Number,
-      required: true,
-    },
-
-    startTime: {
-      type: Date,
-      required: true,
-    },
-
-    endTime: {
-      type: Date,
-      required: true,
-    },
   },
   {
     timestamps: true,

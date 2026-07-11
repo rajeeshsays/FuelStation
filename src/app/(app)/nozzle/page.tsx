@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, PlusCircle } from "lucide-react";
 import { format, parseISO } from "date-fns";
-import { getStaffEntries } from "@/lib/queries";
-import type { StockEntry, FuelType } from "@/lib/types";
+import { getNozzleEntries } from "@/lib/queries";
+import type { Nozzle, FuelType } from "@/lib/types";
 import { StockFilters } from "@/components/stock-filters";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
-const AddStaffDialog = dynamic(() => import('@/components/add-staff-dialog').then(mod => mod.AddStaffDialog), { ssr: false });
+const AddNozzleDialog = dynamic(() => import('@/components/add-nozzle-dialog').then(mod => mod.AddNozzleDialog), { ssr: false });
 const DeleteStaffAction = dynamic(() => import('@/components/delete-stock-action').then(mod => mod.DeleteStockAction), { ssr: false });
 
 
@@ -19,19 +19,15 @@ export default async function NozzlePage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-    const fromParam = searchParams?.from as string | undefined;
-    const toParam = searchParams?.to as string | undefined;
-    const fuelType = (searchParams?.fuelType as FuelType | 'all') || 'all';
-    const from = fromParam ? parseISO(`${fromParam}T00:00:00Z`) : undefined;
-    const to = toParam ? parseISO(`${toParam}T00:00:00Z`) : undefined;
-    const staffEntries = await getStaffEntries({});
+    const pump = (searchParams?.pumpId  || 'all') || 'all';
+    const nozzleEntries = await getNozzleEntries({});
     
   return (
     <>
-      <PageHeader title="Staff Management" description="Log incoming fuel stock and view history.">
-        <AddStaffDialog>
-            <Button><PlusCircle className="mr-2 h-4 w-4" /> Add Staff</Button>
-        </AddStaffDialog>
+      <PageHeader title="Nozzle Management" description="Log incoming fuel stock and view history.">
+        <AddNozzleDialog>
+            <Button><PlusCircle className="mr-2 h-4 w-4" /> Add Nozzle</Button>
+        </AddNozzleDialog>
       </PageHeader>
       
       {/* <div className="mb-6">
@@ -44,15 +40,15 @@ export default async function NozzlePage({
         <Table>
             <TableHeader>
             <TableRow>
-                <TableHead>Name</TableHead>
-              
+                <TableHead>Nozzle Code</TableHead>
+                  <TableHead>Pump Name</TableHead>
             </TableRow>
             </TableHeader>
             <TableBody>
-                {staffEntries.length > 0 ? staffEntries.map((entry) => (
+                {nozzleEntries.length > 0 ? nozzleEntries.map((entry : Nozzle) => (
                     <TableRow key={entry.id}>
-                        <TableCell className="font-medium">{entry.name}</TableCell>
-                       
+                        <TableCell className="font-medium">{entry.nozzleCode}</TableCell>
+                         <TableCell className="font-medium">{entry.pumpName}</TableCell>
                     </TableRow>
                 )) : (
                   <TableRow>

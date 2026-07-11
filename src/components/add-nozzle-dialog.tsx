@@ -3,7 +3,7 @@
 import { useFormState, useFormStatus} from 'react-dom';
 import { useEffect, useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { saveStaffEntry, type StaffEntryFormState } from '@/app/(app)/staff/actions'
+import { saveNozzleEntry, type NozzleEntryFormState } from '@/app/(app)/nozzle/actions'
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button} from "@/components/ui/button";
@@ -30,13 +30,13 @@ function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
         </Button>
     );
 }
-export function AddStaffDialog({ nozzleEntry, children }: NozzleEntryDialogProps) {
+export function AddNozzleDialog({ nozzleEntry, children }: NozzleEntryDialogProps) {
  const [open, setOpen] = useState(false);
     const isEditMode = !!nozzleEntry;
     const { toast } = useToast();
     const formRef = useRef<HTMLFormElement>(null);
-    const initialState: StaffEntryFormState = { message: '', success: false, errors: {} };
-    const [state, dispatch] = useFormState(saveStaffEntry, initialState);
+    const initialState: NozzleEntryFormState = { message: '', success: false, errors: {} };
+    const [state, dispatch] = useFormState(saveNozzleEntry, initialState);
 
     return (
          <Dialog open={open} onOpenChange={setOpen}>
@@ -46,7 +46,7 @@ export function AddStaffDialog({ nozzleEntry, children }: NozzleEntryDialogProps
    
             <DialogContent className="sm:max-w-[425px]">
                  <DialogHeader>
-                     <DialogTitle>{isEditMode ? 'Edit Staff Entry' : 'Add New Staff'}</DialogTitle>
+                     <DialogTitle>{isEditMode ? 'Edit Staff Entry' : 'Add New Nozzle'}</DialogTitle>
                      <DialogDescription>
                          {isEditMode ? 'Update the details of the stock delivery.' : 'Enter the details of the new stock delivery.'}
                      </DialogDescription>
@@ -55,10 +55,13 @@ export function AddStaffDialog({ nozzleEntry, children }: NozzleEntryDialogProps
                       <div className="grid gap-4 py-4">
                          {isEditMode && <input type="hidden" name="id" value={nozzleEntry.id} />}
                         <div className="space-y-2">
-                             <Label htmlFor="staff Name">Staff Name.</Label>
-                             <Input id="name" name="name" value={nozzleEntry?.name}    />
+                             <Label htmlFor="nozzleCode">Nozzle</Label>
+                             <Input id="nozzleCode" name="nozzleCode" value={nozzleEntry?.nozzleCode}    />
+                               <Label htmlFor="pumpId">Pump</Label>
+                               <Input id="pumpId" name="pumpId" value={nozzleEntry?.pumpId}    />
                              {/* {state.errors?.name && <p className="text-sm text-destructive">{state.errors.name[0]}</p>} */}
                          </div>
+
                     {/*     <div className="space-y-2">
                              <Label>Invoice Date</Label>
                               <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>

@@ -14,12 +14,14 @@ export type InventoryData = {
 export type Nozzle = {
   id : string,
   nozzleCode : string,
-  pumbId : string,
+  fuelType : FuelType 
+  pumpId : string,
+  pumpName : string,
 }
 
 export type Pump = {
   id: string;
-  fuelType: FuelType;
+  name : string
 };
 
 export type MeterReading = {

@@ -7,9 +7,12 @@ import MeterReadingModel from '@/models/MeterReading';
 import DailySaleModel from '@/models/DailySale';
 import FuelPriceModel from '@/models/FuelPrice';
 import AuditLogModel from '@/models/AuditLog';
-import StaffModel from '@/models/StaffEntry'
+import NozzleModel from '@/models/Nozzle';
+import PumpModel from '@/models/Pump';
 import { tank_capacities, ALL_FUEL_TYPES } from '@/lib/data';
-import type { FuelPrices, FuelType, InventoryData, MeterReading, DailySale, StockEntry, AuditLog, AuditLogMethod,Staff } from '@/lib/types';
+import type { FuelPrices, FuelType, InventoryData, 
+    MeterReading, DailySale, StockEntry, 
+    AuditLog, AuditLogMethod,Nozzle,Pump} from '@/lib/types';
 import { eachDayOfInterval, format, startOfDay, startOfToday, parseISO, endOfDay, subDays, startOfYesterday, endOfYesterday, startOfMonth, endOfMonth } from 'date-fns';
 
 // Helper to convert Mongoose lean docs to plain objects with an 'id'
@@ -389,10 +392,10 @@ await connectToDatabase();
     {
         matchFilter.method = method;
     }
- const staffDocs = await StaffModel.find(matchFilter).sort({ createdAt: -1 }).lean();
+ const nozzleDocs = await NozzleModel.find(matchFilter).sort({ createdAt: -1 }).lean();
     
     // We can't use the generic mongoDocToPlain because we need the original `createdAt` field
-    return staffDocs.map(doc => {
+    return nozzleDocs.map(doc => {
         const { _id, __v, updatedAt, ...rest } = doc as any;
         return {
             id: _id.toString(),
@@ -402,3 +405,55 @@ await connectToDatabase();
 
 
 }
+
+export async function getNozzleEntries(filters : {method?: AuditLogMethod | 'all'}): Promise<Nozzle[]> {
+
+const { method } = filters;
+await connectToDatabase();
+    const matchFilter: any = {};
+    if (method && method !== 'all') 
+    {
+        matchFilter.method = method;
+    }
+ const nozzleDocs = await NozzleModel.find(matchFilter).sort({ createdAt: -1 })
+      .populate('pumpId', 'pumpName') // Only fetch pumpName
+      .sort({ createdAt: -1 })
+      .lean();
+    // We can't use the generic mongoDocToPlain because we need the original `createdAt` field
+    return nozzleDocs.map(doc => {
+        const { _id, __v, updatedAt, ...rest } = doc as any;
+        return {
+            id: _id.toString(),
+            ...rest
+        } as Nozzle;
+    });
+}
+export async function getPumpEntries(filters : {method?: AuditLogMethod | 'all'}): Promise<Pump[]> {
+
+const { method } = filters;
+await connectToDatabase();
+    const matchFilter: any = {};
+    if (method && method !== 'all') 
+    {
+        matchFilter.method = method;
+    }
+ const pumpDocs = await PumpModel.find(matchFilter).sort({ createdAt: -1 })
+      .populate('pumpId', 'pumpName') // Only fetch pumpName
+      .sort({ createdAt: -1 })
+      .lean();
+    // We can't use the generic mongoDocToPlain because we need the original `createdAt` field
+    return pumpDocs.map(doc => {
+        const { _id, __v, updatedAt, ...rest } = doc as any;
+        return {
+            id: _id.toString(),
+            ...rest
+        } as Pump;
+    });
+
+
+
+
+}
+
+
+

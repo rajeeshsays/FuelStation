@@ -1,33 +1,24 @@
 import mongoose, { Schema, Document, models, model } from 'mongoose';
 
 export interface INozzle extends Document {
-code : string,
-pumpid : number
+nozzleCode : string,
+pumpId : number
 } 
 
 const NozzleSchema = new Schema(
   {
-    code: {
+    nozzleCode: {
       type: String,
-      code: true,
+      required: true,
       trim: true,
     },
 
     pumpId: {
-      type: Number,
+      type:  Schema.Types.ObjectId,
+      ref: 'Pump',
       required: true,
     },
-
-    startTime: {
-      type: Date,
-      required: true,
-    },
-
-    endTime: {
-      type: Date,
-      required: true,
-    },
-  },
+   },
   {
     timestamps: true,
   }

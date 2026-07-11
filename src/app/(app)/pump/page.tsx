@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Pencil, PlusCircle } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { getStaffEntries } from "@/lib/queries";
-import type { StockEntry, FuelType,PumpEntry } from "@/lib/types";
+import type { StockEntry, FuelType,Pump } from "@/lib/types";
 import { StockFilters } from "@/components/stock-filters";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
@@ -47,7 +47,7 @@ export default async function PumpPage({
             <TableBody>
                 {pumpEntries.length > 0 ? pumpEntries.map((entry : Pump) => (
                     <TableRow key={entry.id}>
-                        <TableCell className="font-medium">{entry.name}</TableCell>
+                        <TableCell className="font-medium">{entry.}</TableCell>
                        
                     </TableRow>
                 )) : (
