@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { parseISO } from 'date-fns';
 import { rebuildDerivedData } from '@/lib/engine';
 import connectToDatabase from '@/lib/db';
-import StaffEntryModel from '@/models/StaffEntry';
+import StaffEntryModel from '@/models/Staff';
 import { revalidatePath } from 'next/cache';
 import { logAction } from '@/lib/audit';
 
@@ -36,10 +36,11 @@ function revalidateAllPaths() {
 }
 
 export async function saveStaffEntry(
+
   prevState: StaffEntryFormState,
   formData: FormData
 ): Promise<StaffEntryFormState> {
-  console.log("Inside action...")
+  console.log("Inside save staffentry..")
   console.log(formData.get('name'))
   const dateStr = formData.get('i') as string;
   const dateFromForm = parseISO(`${dateStr}T00:00:00Z`);

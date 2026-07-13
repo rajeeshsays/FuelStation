@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, PlusCircle } from "lucide-react";
 import { format, parseISO } from "date-fns";
-import { getNozzleEntries } from "@/lib/queries";
+import { getNozzleEntries,getPumpOptions } from "@/lib/queries";
 import type { Nozzle, FuelType } from "@/lib/types";
 import { StockFilters } from "@/components/stock-filters";
 import { Suspense } from "react";
@@ -21,11 +21,13 @@ export default async function NozzlePage({
 }) {
     const pump = (searchParams?.pumpId  || 'all') || 'all';
     const nozzleEntries = await getNozzleEntries({});
+    console.log(nozzleEntries);
+    const pumps = await getPumpOptions({});
     
   return (
     <>
       <PageHeader title="Nozzle Management" description="Log incoming fuel stock and view history.">
-        <AddNozzleDialog>
+        <AddNozzleDialog pumps={pumps} >
             <Button><PlusCircle className="mr-2 h-4 w-4" /> Add Nozzle</Button>
         </AddNozzleDialog>
       </PageHeader>
@@ -48,7 +50,7 @@ export default async function NozzlePage({
                 {nozzleEntries.length > 0 ? nozzleEntries.map((entry : Nozzle) => (
                     <TableRow key={entry.id}>
                         <TableCell className="font-medium">{entry.nozzleCode}</TableCell>
-                         <TableCell className="font-medium">{entry.pumpName}</TableCell>
+                         <TableCell className="font-medium">{entry.pumpId.name}</TableCell>
                     </TableRow>
                 )) : (
                   <TableRow>

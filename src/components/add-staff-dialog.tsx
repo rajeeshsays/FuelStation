@@ -4,7 +4,6 @@ import { useFormState, useFormStatus} from 'react-dom';
 import { useEffect, useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { saveStaffEntry, type StaffEntryFormState } from '@/app/(app)/staff/actions'
-
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button} from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,13 +14,16 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from "lucide-react";
-import type { StaffData } from '@/lib/types';
+import type { IDesignationOption, Staff } from '@/lib/types';
 
 
 interface StaffEntryDialogProps {
-    staffEntry?: StaffData;
-    children: React.ReactNode;
+    staffEntry?: Staff;
+    designations : IDesignationOption[],
+    children : React.ReactNode;
 }
+
+
 function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
     const { pending } = useFormStatus();
     return (
@@ -30,7 +32,7 @@ function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
         </Button>
     );
 }
-export function AddStaffDialog({ staffEntry, children }: StaffEntryDialogProps) {
+export function AddStaffDialog({ staffEntry,designations, children }: StaffEntryDialogProps) {
  const [open, setOpen] = useState(false);
     const isEditMode = !!staffEntry;
     const { toast } = useToast();
@@ -57,8 +59,33 @@ export function AddStaffDialog({ staffEntry, children }: StaffEntryDialogProps) 
                         <div className="space-y-2">
                              <Label htmlFor="staff Name">Staff Name.</Label>
                              <Input id="name" name="name" value={staffEntry?.name}    />
+
                              {/* {state.errors?.name && <p className="text-sm text-destructive">{state.errors.name[0]}</p>} */}
                          </div>
+  <div className="space-y-2">
+    <Label htmlFor="pumpId">Pump</Label>
+
+    <Select
+        name="pumpId"
+        defaultValue={staffEntry?.designation.toString()}
+    >
+        <SelectTrigger>
+            <SelectValue placeholder="Select Pump" />
+        </SelectTrigger>
+
+        <SelectContent>
+            {designations.map((desg) => (
+                <SelectItem
+                    key={desg.id}
+                    value={desg.id}
+                >
+                    {desg.name}
+                </SelectItem>
+            ))}
+        </SelectContent>
+    </Select>
+</div>
+
                     {/*     <div className="space-y-2">
                              <Label>Invoice Date</Label>
                               <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>

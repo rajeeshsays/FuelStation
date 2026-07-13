@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { parseISO } from 'date-fns';
 import { rebuildDerivedData } from '@/lib/engine';
 import connectToDatabase from '@/lib/db';
-import StaffEntryModel from '@/models/StaffEntry';
+import StaffEntryModel from '@/models/Staff';
 import { revalidatePath } from 'next/cache';
 import { logAction } from '@/lib/audit';
 

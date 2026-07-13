@@ -15,14 +15,18 @@ export type Nozzle = {
   id : string,
   nozzleCode : string,
   fuelType : FuelType 
-  pumpId : string,
-  pumpName : string,
+  pumpId : {}
 }
 
 export type Pump = {
   id: string;
   name : string
 };
+export type Staff = {
+  id : string,
+  name : string,
+  designation : {},
+}
 
 export type MeterReading = {
   id: string;
@@ -70,7 +74,12 @@ export type AuditLog = {
   createdAt: Date;
 };
 
-export type StaffData = {
-  id? : string;
-  name : string,
+
+export interface IPumpOption {
+    id: string;
+    name: string;
+}
+export interface IDesignationOption {
+    id: string;
+    name: string;
 }

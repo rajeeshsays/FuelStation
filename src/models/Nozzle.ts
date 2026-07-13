@@ -1,8 +1,8 @@
-import mongoose, { Schema, Document, models, model } from 'mongoose';
+import mongoose, { Schema, Document, models, model, Types } from 'mongoose';
 
 export interface INozzle extends Document {
 nozzleCode : string,
-pumpId : number
+pumpId : Types.ObjectId
 } 
 
 const NozzleSchema = new Schema(

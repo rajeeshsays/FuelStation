@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, PlusCircle } from "lucide-react";
 import { format, parseISO } from "date-fns";
-import { getStaffEntries } from "@/lib/queries";
+import { getStaffEntries,getDesignationOptions } from "@/lib/queries";
 import type { StockEntry, FuelType } from "@/lib/types";
 import { StockFilters } from "@/components/stock-filters";
 import { Suspense } from "react";
@@ -25,11 +25,12 @@ export default async function StaffPage({
     const from = fromParam ? parseISO(`${fromParam}T00:00:00Z`) : undefined;
     const to = toParam ? parseISO(`${toParam}T00:00:00Z`) : undefined;
     const staffEntries = await getStaffEntries({});
+    const designations = await getDesignationOptions({});
     
   return (
     <>
       <PageHeader title="Staff Management" description="Log incoming fuel stock and view history.">
-        <AddStaffDialog>
+        <AddStaffDialog designations = {designations} >
             <Button><PlusCircle className="mr-2 h-4 w-4" /> Add Staff</Button>
         </AddStaffDialog>
       </PageHeader>

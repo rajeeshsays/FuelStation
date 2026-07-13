@@ -22,4 +22,4 @@ const PumpEntrySchema = new Schema(
   }
 );
 
-export default (models.ShiftEntry as mongoose.Model<IPumpEntry>) || model<IPumpEntry>('ShiftEntry', PumpEntrySchema);
+export default (models.Pump as mongoose.Model<IPumpEntry>) || model<IPumpEntry>('Pump', PumpEntrySchema);

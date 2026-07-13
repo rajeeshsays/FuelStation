@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, PlusCircle } from "lucide-react";
 import { format, parseISO } from "date-fns";
-import { getStaffEntries } from "@/lib/queries";
+import { getPumpEntries } from "@/lib/queries";
 import type { StockEntry, FuelType,Pump } from "@/lib/types";
 import { StockFilters } from "@/components/stock-filters";
 import { Suspense } from "react";
@@ -24,9 +24,9 @@ export default async function PumpPage({
     
   return (
     <>
-      <PageHeader title="Pump Management" description="Log incoming fuel stock and view history.">
+     <PageHeader title="Pump Management" description="Log incoming fuel stock and view history.">
         <AddStaffDialog>
-            <Button><PlusCircle className="mr-2 h-4 w-4" /> Add Staff</Button>
+            <Button><PlusCircle className="mr-2 h-4 w-4" /> Add Pump</Button>
         </AddStaffDialog>
       </PageHeader>
       
@@ -36,7 +36,7 @@ export default async function PumpPage({
         </Suspense>
       </div> */}
 
-      <div className="border rounded-lg">
+     <div className="border rounded-lg">
         <Table>
             <TableHeader>
             <TableRow>
@@ -47,7 +47,7 @@ export default async function PumpPage({
             <TableBody>
                 {pumpEntries.length > 0 ? pumpEntries.map((entry : Pump) => (
                     <TableRow key={entry.id}>
-                        <TableCell className="font-medium">{entry.}</TableCell>
+                        <TableCell className="font-medium">{entry.name}</TableCell>
                        
                     </TableRow>
                 )) : (
@@ -59,7 +59,7 @@ export default async function PumpPage({
                 )}
             </TableBody>
         </Table>
-      </div>
+      </div> 
 
     </>
   );

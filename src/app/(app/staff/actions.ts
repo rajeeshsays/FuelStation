@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { parseISO } from 'date-fns';
 import { rebuildDerivedData } from '@/lib/engine';
 import connectToDatabase from '@/lib/db';
-import StaffEntryModel from '@/models/StaffEntry';
+import StaffEntryModel from '@/models/Staff';
 
 const StaffEntrySchema = z.object({
   id: z.string().optional(),

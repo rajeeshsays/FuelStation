@@ -4,7 +4,6 @@ import { useFormState, useFormStatus} from 'react-dom';
 import { useEffect, useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { saveNozzleEntry, type NozzleEntryFormState } from '@/app/(app)/nozzle/actions'
-
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button} from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,13 +14,16 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from "lucide-react";
-import type { Nozzle } from '@/lib/types';
+import type { Nozzle,IPumpOption } from '@/lib/types';
+
 
 
 interface NozzleEntryDialogProps {
     nozzleEntry?: Nozzle;
+    pumps: IPumpOption[];
     children: React.ReactNode;
 }
+
 function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
     const { pending } = useFormStatus();
     return (
@@ -30,7 +32,7 @@ function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
         </Button>
     );
 }
-export function AddNozzleDialog({ nozzleEntry, children }: NozzleEntryDialogProps) {
+export function AddNozzleDialog({ nozzleEntry,pumps, children }: NozzleEntryDialogProps) {
  const [open, setOpen] = useState(false);
     const isEditMode = !!nozzleEntry;
     const { toast } = useToast();
@@ -57,8 +59,29 @@ export function AddNozzleDialog({ nozzleEntry, children }: NozzleEntryDialogProp
                         <div className="space-y-2">
                              <Label htmlFor="nozzleCode">Nozzle</Label>
                              <Input id="nozzleCode" name="nozzleCode" value={nozzleEntry?.nozzleCode}    />
-                               <Label htmlFor="pumpId">Pump</Label>
-                               <Input id="pumpId" name="pumpId" value={nozzleEntry?.pumpId}    />
+                             <div className="space-y-2">
+    <Label htmlFor="pumpId">Pump</Label>
+
+    <Select
+        name="pumpId"
+        defaultValue={nozzleEntry?.pumpId?.toString()}
+    >
+        <SelectTrigger>
+            <SelectValue placeholder="Select Pump" />
+        </SelectTrigger>
+
+        <SelectContent>
+            {pumps.map((pump) => (
+                <SelectItem
+                    key={pump.id}
+                    value={pump.id}
+                >
+                    {pump.name}
+                </SelectItem>
+            ))}
+        </SelectContent>
+    </Select>
+</div>
                              {/* {state.errors?.name && <p className="text-sm text-destructive">{state.errors.name[0]}</p>} */}
                          </div>
 
