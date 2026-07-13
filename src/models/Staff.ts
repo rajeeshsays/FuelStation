@@ -1,12 +1,9 @@
 
-import mongoose, {Schema, Document, models, model } from 'mongoose';
+import mongoose, {Schema, Document, models, model,Types } from 'mongoose';
 export interface IStaff extends Document {
     name : string,
-      designationId: {
-      type:  Schema.Types.ObjectId,
-      ref: 'Pump',
-      required: true,
-    },
+    designationId:  Types.ObjectId
+    
 }
 const StaffSchema: Schema = new Schema({
     name : {type:String,required : false},

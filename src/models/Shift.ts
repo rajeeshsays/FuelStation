@@ -1,17 +1,16 @@
 
-import { timeStamp } from 'console';
 import mongoose, { Schema, Document, models, model } from 'mongoose';
 
-export interface IShiftEntry extends Document {
+export interface IShift extends Document {
   name: string;
-  inchargeId: number;
-  startTime: Date;
-  endTime: Date;
+  inchargeId: string;
+  startTime: string;
+  endTime: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-const ShiftEntrySchema = new Schema(
+const ShiftSchema = new Schema(
   {
     name: {
       type: String,
@@ -20,18 +19,21 @@ const ShiftEntrySchema = new Schema(
     },
 
     inchargeId: {
-      type: Number,
+      type: String,
       required: true,
+      trim: true,
     },
 
     startTime: {
-      type: Date,
+      type: String,
       required: true,
+      trim: true,
     },
 
     endTime: {
-      type: Date,
+      type: String,
       required: true,
+      trim: true,
     },
   },
   {
@@ -39,4 +41,4 @@ const ShiftEntrySchema = new Schema(
   }
 );
 
-export default (models.ShiftEntry as mongoose.Model<IShiftEntry>) || model<IShiftEntry>('ShiftEntry', ShiftEntrySchema);
+export default (models.Shift as mongoose.Model<IShift>) || model<IShift>('Shift', ShiftSchema);

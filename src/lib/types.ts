@@ -12,20 +12,39 @@ export type InventoryData = {
     }
 }
 export type Nozzle = {
-  id : string,
-  nozzleCode : string,
-  fuelType : FuelType 
-  pumpId : {}
-}
+  id: string;
+  nozzleCode: string;
+  pumpId: string | { id: string; name: string };
+};
 
 export type Pump = {
   id: string;
-  name : string
+  name: string;
 };
+
 export type Staff = {
-  id : string,
-  name : string,
-  designation : {},
+  id: string;
+  name: string;
+  designationId: string | { id: string; name: string };
+};
+
+export type Shift = {
+  id: string;
+  name: string;
+  inchargeId: string;
+  inchargeName?: string;
+  startTime: string;
+  endTime: string;
+}
+
+export type ShiftAssignment = {
+  id: string;
+  staffId: string;
+  shiftId: string;
+  fromDate: Date;
+  toDate?: Date;
+  staffName?: string;
+  shiftName?: string;
 }
 
 export type MeterReading = {

@@ -57,14 +57,15 @@ export function AddNozzleDialog({ nozzleEntry,pumps, children }: NozzleEntryDial
                       <div className="grid gap-4 py-4">
                          {isEditMode && <input type="hidden" name="id" value={nozzleEntry.id} />}
                         <div className="space-y-2">
-                             <Label htmlFor="nozzleCode">Nozzle</Label>
-                             <Input id="nozzleCode" name="nozzleCode" value={nozzleEntry?.nozzleCode}    />
+                             <Label htmlFor="nozzleCode">Nozzle Code</Label>
+                             <Input id="nozzleCode" name="nozzleCode" defaultValue={nozzleEntry?.nozzleCode ?? ''} />
+                             {state.errors?.nozzleCode && <p className="text-sm text-destructive">{state.errors.nozzleCode[0]}</p>}
                              <div className="space-y-2">
     <Label htmlFor="pumpId">Pump</Label>
 
     <Select
         name="pumpId"
-        defaultValue={nozzleEntry?.pumpId?.toString()}
+        defaultValue={typeof nozzleEntry?.pumpId === 'string' ? nozzleEntry.pumpId : nozzleEntry?.pumpId?.id ?? ''}
     >
         <SelectTrigger>
             <SelectValue placeholder="Select Pump" />

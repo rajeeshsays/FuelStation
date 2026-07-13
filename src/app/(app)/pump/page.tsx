@@ -3,31 +3,25 @@ import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, PlusCircle } from "lucide-react";
-import { format, parseISO } from "date-fns";
 import { getPumpEntries } from "@/lib/queries";
-import type { StockEntry, FuelType,Pump } from "@/lib/types";
-import { StockFilters } from "@/components/stock-filters";
-import { Suspense } from "react";
+import type { Pump } from "@/lib/types";
 import dynamic from "next/dynamic";
 
-const AddStaffDialog = dynamic(() => import('@/components/add-staff-dialog').then(mod => mod.AddStaffDialog), { ssr: false });
-const DeleteStaffAction = dynamic(() => import('@/components/delete-stock-action').then(mod => mod.DeleteStockAction), { ssr: false });
+const AddPumpDialog = dynamic(() => import('@/components/add-pump-dialog').then(mod => mod.AddPumpDialog), { ssr: false });
+const DeleteEntryAction = dynamic(() => import('@/components/delete-entry-action').then(mod => mod.DeleteEntryAction), { ssr: false });
+
+import { deletePumpEntry } from '@/app/(app)/pump/actions';
 
 
-export default async function PumpPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-    const name = searchParams?.name as string | undefined;
+export default async function PumpPage() {
     const pumpEntries = await getPumpEntries({});
     
   return (
     <>
-     <PageHeader title="Pump Management" description="Log incoming fuel stock and view history.">
-        <AddStaffDialog>
+     <PageHeader title="Pump Management" description="Create and manage fuel pumps.">
+        <AddPumpDialog>
             <Button><PlusCircle className="mr-2 h-4 w-4" /> Add Pump</Button>
-        </AddStaffDialog>
+        </AddPumpDialog>
       </PageHeader>
       
       {/* <div className="mb-6">
@@ -41,19 +35,34 @@ export default async function PumpPage({
             <TableHeader>
             <TableRow>
                 <TableHead>Name</TableHead>
-              
+                <TableHead className="text-right">Actions</TableHead>
             </TableRow>
             </TableHeader>
             <TableBody>
                 {pumpEntries.length > 0 ? pumpEntries.map((entry : Pump) => (
                     <TableRow key={entry.id}>
                         <TableCell className="font-medium">{entry.name}</TableCell>
-                       
+                        <TableCell>
+                          <div className="flex justify-end gap-2">
+                            <AddPumpDialog pumpEntry={entry}>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <Pencil className="h-4 w-4" />
+                                <span className="sr-only">Edit</span>
+                              </Button>
+                            </AddPumpDialog>
+                            <DeleteEntryAction
+                              entryId={entry.id}
+                              deleteAction={deletePumpEntry}
+                              itemType="pump"
+                              itemName={entry.name}
+                            />
+                          </div>
+                        </TableCell>
                     </TableRow>
                 )) : (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center h-24">
-                      No stock entries found for the selected filters.
+                    <TableCell colSpan={2} className="text-center h-24">
+                      No pumps found.
                     </TableCell>
                   </TableRow>
                 )}

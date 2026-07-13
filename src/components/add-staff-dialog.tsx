@@ -57,24 +57,24 @@ export function AddStaffDialog({ staffEntry,designations, children }: StaffEntry
                       <div className="grid gap-4 py-4">
                          {isEditMode && <input type="hidden" name="id" value={staffEntry.id} />}
                         <div className="space-y-2">
-                             <Label htmlFor="staff Name">Staff Name.</Label>
-                             <Input id="name" name="name" value={staffEntry?.name}    />
+                             <Label htmlFor="name">Staff Name</Label>
+                             <Input id="name" name="name" defaultValue={staffEntry?.name ?? ''} />
 
-                             {/* {state.errors?.name && <p className="text-sm text-destructive">{state.errors.name[0]}</p>} */}
+                             {state.errors?.name && <p className="text-sm text-destructive">{state.errors.name[0]}</p>}
                          </div>
   <div className="space-y-2">
-    <Label htmlFor="pumpId">Pump</Label>
+    <Label htmlFor="designationId">Designation</Label>
 
     <Select
-        name="pumpId"
-        defaultValue={staffEntry?.designation.toString()}
+        name="designationId"
+        defaultValue={typeof staffEntry?.designationId === 'string' ? staffEntry.designationId : staffEntry?.designationId?.id ?? ''}
     >
         <SelectTrigger>
-            <SelectValue placeholder="Select Pump" />
+            <SelectValue placeholder="Select Designation" />
         </SelectTrigger>
 
         <SelectContent>
-            {designations.map((desg) => (
+            {designations && designations.map((desg) => (
                 <SelectItem
                     key={desg.id}
                     value={desg.id}

@@ -1,7 +1,6 @@
 'use server';
 
 import { z } from 'zod';
-import { parseISO } from 'date-fns';
 import { rebuildDerivedData } from '@/lib/engine';
 import connectToDatabase from '@/lib/db';
 import NozzleEntryModel from '@/models/Nozzle';
@@ -11,7 +10,7 @@ import { logAction } from '@/lib/audit';
 const NozzleEntrySchema = z.object({
   id: z.string().optional(),
   nozzleCode: z.string().min(1, 'Nozzle code is required.'),
-  pumpId: z.string().min(1, 'Pump  is required.')
+  pumpId: z.string().min(1, 'Pump is required.'),
 });
 
 export type NozzleEntryFormState = {
@@ -39,15 +38,10 @@ export async function saveNozzleEntry (
   prevState: NozzleEntryFormState,
   formData: FormData
 ): Promise<NozzleEntryFormState> {
-  console.log("Inside action...")
-  console.log(formData.get('nozzleCode'))
-  const dateStr = formData.get('i') as string;
-  const dateFromForm = parseISO(`${dateStr}T00:00:00Z`);
-
   const validatedFields = NozzleEntrySchema.safeParse({
     id: formData.get('id') || undefined,
     nozzleCode: formData.get('nozzleCode'),
-    pumpId:formData.get('pumpId')
+    pumpId: formData.get('pumpId'),
   });
 
   if (!validatedFields.success) {

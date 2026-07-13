@@ -8,13 +8,16 @@ import DailySaleModel from '@/models/DailySale';
 import FuelPriceModel from '@/models/FuelPrice';
 import AuditLogModel from '@/models/AuditLog';
 import NozzleModel from '@/models/Nozzle';
+import StaffModel from '@/models/Staff';
 import PumpModel from '@/models/Pump';
 import DesignationModel from '@/models/Designation';
+import ShiftModel from '@/models/Shift';
+import ShiftAssignmentModel from '@/models/ShiftAssign';
 
 import { tank_capacities, ALL_FUEL_TYPES } from '@/lib/data';
 import type { FuelPrices, FuelType, InventoryData, 
     MeterReading, DailySale, StockEntry, 
-    AuditLog, AuditLogMethod,Nozzle,Pump,Staff} from '@/lib/types';
+    AuditLog, AuditLogMethod,Nozzle,Pump,Staff, Shift, ShiftAssignment} from '@/lib/types';
 import { eachDayOfInterval, format, startOfDay, startOfToday, parseISO, endOfDay, subDays, startOfYesterday, endOfYesterday, startOfMonth, endOfMonth } from 'date-fns';
 
 // Helper to convert Mongoose lean docs to plain objects with an 'id'
@@ -384,28 +387,32 @@ export async function getAuditLogs(filters: {
     });
 }
 
-export async function getStaffEntries( filters : {method?: AuditLogMethod | 'all'}): Promise<Staff[]> {
+export async function getStaffEntries(filters: {method?: AuditLogMethod | 'all'}): Promise<Staff[]> {
+  const { method } = filters;
 
-const { method } = filters;
+  await connectToDatabase();
+  const matchFilter: any = {};
+  if (method && method !== 'all') {
+    matchFilter.method = method;
+  }
 
-await connectToDatabase();
-    const matchFilter: any = {};
-    if (method && method !== 'all') 
-    {
-        matchFilter.method = method;
-    }
- const nozzleDocs = await NozzleModel.find(matchFilter).sort({ createdAt: -1 }).lean();
-    
-    // We can't use the generic mongoDocToPlain because we need the original `createdAt` field
-    return nozzleDocs.map(doc => {
-        const { _id, __v, updatedAt, ...rest } = doc as any;
-        return {
-            id: _id.toString(),
-            ...rest
-        } as Staff;
-    });
+  const staffDocs = await StaffModel.find(matchFilter)
+    .populate('designationId', 'name')
+    .sort({ createdAt: -1 })
+    .lean();
 
-
+  return staffDocs.map(doc => {
+    const { _id, __v, updatedAt, designationId, ...rest } = doc as any;
+    return {
+      id: _id.toString(),
+      designationId: designationId
+        ? typeof designationId === 'object'
+          ? { id: designationId._id.toString(), name: designationId.name }
+          : designationId.toString()
+        : '',
+      ...rest,
+    } as Staff;
+  });
 }
 
 export async function getNozzleEntries(filters : {method?: AuditLogMethod | 'all'}): Promise<Nozzle[]> {
@@ -430,6 +437,80 @@ await connectToDatabase();
         } as Nozzle;
     });
 }
+
+export async function getShiftEntries(filters : {method?: AuditLogMethod | 'all'}): Promise<Shift[]> {
+    const { method } = filters;
+
+    await connectToDatabase();
+    const matchFilter: any = {};
+    if (method && method !== 'all') {
+        matchFilter.method = method;
+    }
+
+    const shiftDocs = await ShiftModel.find(matchFilter).sort({ startTime: 1 }).lean();
+
+    const inchargeIds = [...new Set(shiftDocs.map((doc: any) => doc.inchargeId).filter(Boolean))];
+    const inchargeStaff = await StaffModel.find({ _id: { $in: inchargeIds } }).lean();
+    const inchargeNameById = new Map(inchargeStaff.map((s: any) => [s._id.toString(), s.name]));
+
+    return shiftDocs.map((doc: any) => {
+        const { _id, __v, updatedAt, ...rest } = doc;
+        return {
+            id: _id.toString(),
+            ...rest,
+            inchargeName: inchargeNameById.get(rest.inchargeId) || rest.inchargeId,
+        } as Shift;
+    });
+}
+
+export async function getShiftAssignmentEntries(filters : {method?: AuditLogMethod | 'all'}): Promise<ShiftAssignment[]> {
+    const { method } = filters;
+
+    await connectToDatabase();
+    const matchFilter: any = {};
+    if (method && method !== 'all') {
+        matchFilter.method = method;
+    }
+
+    const assignmentDocs = await ShiftAssignmentModel.find(matchFilter).sort({ fromDate: -1 }).lean();
+
+    const staffIds = [...new Set(assignmentDocs.map((doc: any) => doc.staffId).filter(Boolean))];
+    const shiftIds = [...new Set(assignmentDocs.map((doc: any) => doc.shiftId).filter(Boolean))];
+    const [staffDocs, shiftDocs] = await Promise.all([
+        StaffModel.find({ _id: { $in: staffIds } }).lean(),
+        ShiftModel.find({ _id: { $in: shiftIds } }).lean(),
+    ]);
+    const staffNameById = new Map(staffDocs.map((s: any) => [s._id.toString(), s.name]));
+    const shiftNameById = new Map(shiftDocs.map((s: any) => [s._id.toString(), s.name]));
+
+    return assignmentDocs.map((doc: any) => {
+        const { _id, __v, updatedAt, ...rest } = doc;
+        const staffId = typeof rest.staffId === 'string' ? rest.staffId : rest.staffId?._id?.toString() || '';
+        const shiftId = typeof rest.shiftId === 'string' ? rest.shiftId : rest.shiftId?._id?.toString() || '';
+        return {
+            id: _id.toString(),
+            ...rest,
+            staffId,
+            shiftId,
+            staffName: staffNameById.get(staffId) || staffId,
+            shiftName: shiftNameById.get(shiftId) || shiftId,
+        } as ShiftAssignment;
+    });
+}
+
+export async function getShiftInchargeOptions(): Promise<{ id: string; name: string }[]> {
+    await connectToDatabase();
+
+    const staffDocs = await StaffModel.find()
+        .sort({ name: 1 })
+        .lean();
+
+    return staffDocs.map((doc: any) => ({
+        id: doc._id.toString(),
+        name: doc.name,
+    }));
+}
+
 export async function getPumpEntries(filters : {method?: AuditLogMethod | 'all'}): Promise<Pump[]> {
 
 const { method } = filters;
@@ -479,7 +560,7 @@ await connectToDatabase();
 
 
 }
-export async function getDesignationOptions(filters : {method?: AuditLogMethod | 'all'}): Promise<Pump[]> {
+export async function getDesignationOptions(filters: {method?: AuditLogMethod | 'all'}): Promise<{ id: string; name: string }[]> {
 
 const { method } = filters;
 await connectToDatabase();

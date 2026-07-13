@@ -37,7 +37,7 @@ const navItems = [
   { href: "/pump", icon:FuelIcon, label: "Pump" },
   { href: "/nozzle", icon:Funnel, label: "Nozzle" },
   { href: "/shift", icon:Repeat1Icon, label: "Shift" },
-  { href: "/assignShift", icon:ListOrderedIcon, label: "Assign Shift" },
+  { href: "/assign-shift", icon:ListOrderedIcon, label: "Assign Shift" },
 ];
 
 export function Nav() {

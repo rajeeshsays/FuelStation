@@ -3,27 +3,17 @@ import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, PlusCircle } from "lucide-react";
-import { format, parseISO } from "date-fns";
-import { getStaffEntries,getDesignationOptions } from "@/lib/queries";
-import type { StockEntry, FuelType } from "@/lib/types";
-import { StockFilters } from "@/components/stock-filters";
-import { Suspense } from "react";
+import { getStaffEntries, getDesignationOptions } from "@/lib/queries";
+import type { FuelType } from "@/lib/types";
 import dynamic from "next/dynamic";
 
 const AddStaffDialog = dynamic(() => import('@/components/add-staff-dialog').then(mod => mod.AddStaffDialog), { ssr: false });
-const DeleteStaffAction = dynamic(() => import('@/components/delete-stock-action').then(mod => mod.DeleteStockAction), { ssr: false });
+const DeleteEntryAction = dynamic(() => import('@/components/delete-entry-action').then(mod => mod.DeleteEntryAction), { ssr: false });
+
+import { deleteStaffEntry } from '@/app/(app)/staff/actions';
 
 
-export default async function StaffPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-    const fromParam = searchParams?.from as string | undefined;
-    const toParam = searchParams?.to as string | undefined;
-    const fuelType = (searchParams?.fuelType as FuelType | 'all') || 'all';
-    const from = fromParam ? parseISO(`${fromParam}T00:00:00Z`) : undefined;
-    const to = toParam ? parseISO(`${toParam}T00:00:00Z`) : undefined;
+export default async function StaffPage() {
     const staffEntries = await getStaffEntries({});
     const designations = await getDesignationOptions({});
     
@@ -46,19 +36,36 @@ export default async function StaffPage({
             <TableHeader>
             <TableRow>
                 <TableHead>Name</TableHead>
-              
+                <TableHead>Designation</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
             </TableRow>
             </TableHeader>
             <TableBody>
                 {staffEntries.length > 0 ? staffEntries.map((entry) => (
                     <TableRow key={entry.id}>
                         <TableCell className="font-medium">{entry.name}</TableCell>
-                       
+                        <TableCell>{typeof entry.designationId === 'string' ? entry.designationId : entry.designationId?.name}</TableCell>
+                        <TableCell>
+                          <div className="flex justify-end gap-2">
+                            <AddStaffDialog staffEntry={entry} designations={designations}>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <Pencil className="h-4 w-4" />
+                                <span className="sr-only">Edit</span>
+                              </Button>
+                            </AddStaffDialog>
+                            <DeleteEntryAction
+                              entryId={entry.id}
+                              deleteAction={deleteStaffEntry}
+                              itemType="staff"
+                              itemName={entry.name}
+                            />
+                          </div>
+                        </TableCell>
                     </TableRow>
                 )) : (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center h-24">
-                      No stock entries found for the selected filters.
+                    <TableCell colSpan={3} className="text-center h-24">
+                      No staff entries found.
                     </TableCell>
                   </TableRow>
                 )}
